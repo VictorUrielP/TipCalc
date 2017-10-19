@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,8 +63,21 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnSubmit)
     public void handleClickSubmit(){
-        Log.e(getLocalClassName(),"Click en Submit");
         hideKeyBoard();
+        String strInputTotal = inputBill.getText().toString().trim();
+        if(!strInputTotal.isEmpty()){
+            double total = Double.parseDouble(strInputTotal);
+            int tipPercentage = getTipPercentage();
+            double tip = total*(tipPercentage/100d);
+
+            String strTip = String.format(getString(R.string.global_message_tip, tip));
+            txtTip.setVisibility(View.VISIBLE);
+            txtTip.setText(strTip);
+        }
+    }
+
+    public int getTipPercentage() {
+        return DEFAULT_TIP_PERCENTAGE;
     }
 
     private void hideKeyBoard(){
@@ -83,4 +97,5 @@ public class MainActivity extends AppCompatActivity {
         intent.setData(Uri.parse(strUrl));
         startActivity(intent);
     }
+
 }
