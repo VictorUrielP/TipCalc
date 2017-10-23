@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnDecrease"
-        android:text="@string/main.button.increase"
+        android:text="@string/main.button.decrease"
         android:layout_alignTop="@+id/btnIncrease"
         android:layout_toRightOf="@+id/btnIncrease"
         android:layout_toEndOf="@+id/btnIncrease"/>

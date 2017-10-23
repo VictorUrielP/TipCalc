@@ -1,4 +1,4 @@
-package com.example.windows.tipcalc;
+package com.example.windows.tipcalc.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,12 +14,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.windows.tipcalc.R;
+import com.example.windows.tipcalc.TipCalcApp;
+import com.example.windows.tipcalc.fragments.TipHistoryListFragment;
+import com.example.windows.tipcalc.fragments.TipHistoryListFragmentListener;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TipHistoryListFragmentListener fragmentListener;
+    private final static int TIP_STEP_CHANGE = 1;
+    private final static int DEFAULT_TIP_PERCENTAGE = 10;
     @Bind(R.id.inputBill)
     EditText inputBill;
     @Bind(R.id.btnSubmit)
@@ -35,16 +43,15 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.txtTip)
     TextView txtTip;
 
-
-    private final static int TIP_STEP_CHANGE = 1;
-    private final static int DEFAULT_TIP_PERCENTAGE = 10;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        TipHistoryListFragment fragment = (TipHistoryListFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentList);
+        fragment.setRetainInstance(true);
+        fragmentListener = (TipHistoryListFragmentListener) fragment;
     }
 
     @Override
@@ -62,30 +69,59 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.btnSubmit)
-    public void handleClickSubmit(){
+    public void handleClickSubmit() {
         hideKeyBoard();
         String strInputTotal = inputBill.getText().toString().trim();
-        if(!strInputTotal.isEmpty()){
+        if (!strInputTotal.isEmpty()) {
             double total = Double.parseDouble(strInputTotal);
             int tipPercentage = getTipPercentage();
-            double tip = total*(tipPercentage/100d);
+            double tip = total * (tipPercentage / 100d);
 
             String strTip = String.format(getString(R.string.global_message_tip, tip));
+            fragmentListener.action(strTip);
             txtTip.setVisibility(View.VISIBLE);
             txtTip.setText(strTip);
         }
     }
 
-    public int getTipPercentage() {
-        return DEFAULT_TIP_PERCENTAGE;
+    @OnClick(R.id.btnIncrease)
+    public void handelClickIncrease() {
+        hideKeyBoard();
+        handleTipChange(TIP_STEP_CHANGE);
     }
 
-    private void hideKeyBoard(){
+    @OnClick(R.id.btnDecrease)
+    public void handelClickDecrease() {
+        hideKeyBoard();
+        handleTipChange(-TIP_STEP_CHANGE);
+
+    }
+
+    private void handleTipChange(int change) {
+        int tipPercentage = getTipPercentage();
+        tipPercentage += change;
+        if (tipPercentage > 0) {
+            inputPercentage.setText(String.valueOf(tipPercentage));
+        }
+    }
+
+    public int getTipPercentage() {
+        int tipPercentage = DEFAULT_TIP_PERCENTAGE;
+        String strInputTipPercentage = inputPercentage.getText().toString().trim();
+        if (!strInputTipPercentage.isEmpty()) {
+            tipPercentage = Integer.parseInt(strInputTipPercentage);
+        } else {
+            inputPercentage.setText(String.valueOf(tipPercentage));
+        }
+        return tipPercentage;
+    }
+
+    private void hideKeyBoard() {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         try {
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), inputMethodManager.HIDE_NOT_ALWAYS);
-        }catch (NullPointerException npe){
-            Log.e(getLocalClassName(),Log.getStackTraceString(npe));
+        } catch (NullPointerException npe) {
+            Log.e(getLocalClassName(), Log.getStackTraceString(npe));
         }
     }
 
