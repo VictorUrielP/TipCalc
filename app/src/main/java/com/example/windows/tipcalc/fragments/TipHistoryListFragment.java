@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.windows.tipcalc.R;
+import com.example.victo.tipcalc.R;
 
 
 /**

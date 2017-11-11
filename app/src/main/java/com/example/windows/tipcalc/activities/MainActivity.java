@@ -14,12 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.windows.tipcalc.R;
+import com.example.victo.tipcalc.R;
 import com.example.windows.tipcalc.TipCalcApp;
 import com.example.windows.tipcalc.fragments.TipHistoryListFragment;
 import com.example.windows.tipcalc.fragments.TipHistoryListFragmentListener;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -28,19 +28,19 @@ public class MainActivity extends AppCompatActivity {
     private TipHistoryListFragmentListener fragmentListener;
     private final static int TIP_STEP_CHANGE = 1;
     private final static int DEFAULT_TIP_PERCENTAGE = 10;
-    @Bind(R.id.inputBill)
+    @BindView(R.id.inputBill)
     EditText inputBill;
-    @Bind(R.id.btnSubmit)
+    @BindView(R.id.btnSubmit)
     Button btnSubmit;
-    @Bind(R.id.inputPercentage)
+    @BindView(R.id.inputPercentage)
     EditText inputPercentage;
-    @Bind(R.id.btnIncrease)
+    @BindView(R.id.btnIncrease)
     Button btnIncrease;
-    @Bind(R.id.btnDecrease)
+    @BindView(R.id.btnDecrease)
     Button btnDecrease;
-    @Bind(R.id.btnClear)
+    @BindView(R.id.btnClear)
     Button btnClear;
-    @Bind(R.id.txtTip)
+    @BindView(R.id.txtTip)
     TextView txtTip;
 
     @Override
